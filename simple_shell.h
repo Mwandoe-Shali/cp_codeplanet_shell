@@ -13,9 +13,9 @@
 #include <errno.h>
 
 /* read and wrtite buffers sizes */
-#define READ_BUF_SIZE 1024
-#define WRITE_BUF_SIZE 1024
-#define BUF_FLUSH -1
+#define READ_BUFF_SIZE 1024
+#define WRITE_BUFF_SIZE 1024
+#define BUFF_FLUSH -1
 
 /* for chaining */
 #define CMD_NORM	0
@@ -51,48 +51,50 @@ typedef struct liststr
 } list_t;
 
 /**
- *struct passinfo - contains aarguements to pass to a function
- *@arg: a string from getline
- *@argv: an array of strings generated from arg
- *@line_count:  count
- *@err_num: error code
- *@linecount_flag: on count  line of input
- *@fname: program filename
- *@env: local copy of environ
- *@environ: custom copy of environ
- *@history: history node
- *@alias: alias node
- *@env_changed: on, environ was changed
- *@status: return status of  prev exec command
- *@cmd_buf: address of pointer to cmd_buf
- *@cmd_buf_type: CMD_type
- *@readfd: the file_d from which to read line input
- *@histcount: history line number count
- *@path: is the file path
- *@argc: arguement count
+ * struct custom_info - Contains arguments for shell functions
+ * @arg: A command input obtained from the user
+ * @argv: An array of arguments parsed from the input command
+ * @line_count: Count of the current input line
+ * @err_num: Error code for tracking errors
+ * @linecount_flag: Flag indicating the line count mode
+ * @fname: Filename of the shell program
+ * @env: Linked list storing environment variables
+ * @environ: Custom copy of the environment variable list
+ * @history: Linked list for storing command history
+ * @alias: Linked list for managing command aliases
+ * @env_changed: Flag indicating environment changes
+ * @status: Return status of the previous executed command
+ * @cmd_buff: Address of a pointer to the command buffer
+ * @cmd_buff_type: Type of command in the buffer
+ * @readfd: File descriptor for reading line input
+ * @histcount: History line number count
+ * @path: Path to a file
+ * @argc: Argument count for the current command
  */
-typedef struct passinfo
+typedef struct custom_info
 {
-	char *arg;
-	char **argv;
-	char *path;
-	int argc;
-	unsigned int line_count;
-	int err_num;
-	int linecount_flag;
-	char *fname;
-	list_t *env;
-	list_t *history;
-	list_t *alias;
-	char **environ;
-	int env_changed;
-	int status;
+    char *arg;
+    char **argv;
+    char *path;
+    int argc;
+    unsigned int line_count;
+    int err_num;
+    int linecount_flag;
+    char *fname;
+    list_t *env;
+    list_t *history;
+    list_t *alias;
+    char **environ;
+    int env_changed;
+    int status;
 
-	char **cmd_buf;
-	int cmd_buf_type;
-	int readfd;
-	int histcount;
-} info_t;
+    char **cmd_buff;
+    int cmd_buff_type;
+    int readfd;
+    int histcount;
+} cm_info;
+
+
 
 #define INFO_INIT \
 {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, \
@@ -106,20 +108,20 @@ typedef struct passinfo
 typedef struct builtin
 {
 	char *type;
-	int (*func)(info_t *);
+	int (*func)(cm_info *);
 } builtin_table;
 
 
 /* shloop.c */
-int hsh(info_t *, char **);
-int get_builtin(info_t *);
-void get_cmd(info_t *);
-void _fork(info_t *);
+int hsh(cm_info *, char **);
+int get_builtin(cm_info *);
+void get_cmd(cm_info *);
+void _fork(cm_info *);
 
 /* parser.c */
-int check_cmd(info_t *, char *);
+int check_cmd(cm_info *, char *);
 char *cpy_chars(char *, int, int);
-char *get_location(info_t *, char *, char *);
+char *get_location(cm_info *, char *, char *);
 
 /* loophsh.c */
 int loophsh(char **);
@@ -167,23 +169,23 @@ int _atoi(char *);
 
 /* errors1.c */
 int err_atoi(char *);
-void print_err(info_t *, char *);
+void print_err(cm_info *, char *);
 int print_dec(int, int);
 char *convert_num(long int, int, int);
 void change_comments(char *);
 
 /* builtin.c */
-int _myexit(info_t *);
-int _cd(info_t *);
-int _help(info_t *);
+int _myexit(cm_info *);
+int _cd(cm_info *);
+int _help(cm_info *);
 
 /* builtin1.c */
-int _history(info_t *);
-int _alias(info_t *);
+int _history(cm_info *);
+int _alias(cm_info *);
 
 /* getline.c */
-ssize_t get_input(info_t *);
-int _getline(info_t *, char **, size_t *);
+ssize_t get_input(cm_info *);
+int _getline(cm_info *, char **, size_t *);
 void sigintHandle(int);
 
 /* getinfo.c */
