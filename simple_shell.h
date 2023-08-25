@@ -48,7 +48,7 @@ typedef struct liststr
 	int num;
 	char *str;
 	struct liststr *next;
-} list_t;
+} list_st;
 
 /**
  * struct custom_info - Contains arguments for shell functions
@@ -101,7 +101,7 @@ typedef struct custom_info
 	0, 0, 0}
 
 /**
- *struct builtin - contains a builtin strings
+ *struct builtin - contains builtin function strings
  *@type: builtin command flag
  *@func: function
  */
@@ -112,120 +112,124 @@ typedef struct builtin
 } builtin_table;
 
 
-/* shloop.c */
-int hsh(cm_info *, char **);
-int get_builtin(cm_info *);
-void get_cmd(cm_info *);
-void _fork(cm_info *);
+/* shell_loop.c */
+int prompt(cm_info *cu_info, char **av);
+int _get_builtin(cm_info *cu_info);
+void _get_cmd(cm_info *cu_info);
+void _fork_(cm_info *cu_info);
 
 /* parser.c */
-int check_cmd(cm_info *, char *);
-char *cpy_chars(char *, int, int);
-char *get_location(cm_info *, char *, char *);
+int checks_cmd(cm_info *cu_info, char *path);
+char *copy_chars(char *str_path, int start, int end);
+char *get_loc(cm_info *cu_info, char *str_path, char *command);
 
-/* loophsh.c */
-int loophsh(char **);
+/* loop_prompt.c */
+int loop_prompt(char **);
 
 /* errors.c */
-void _eputs(char *);
-int _eputchar(char);
-int _putfd(char c, int fd);
-int _putsfd(char *str, int fd);
+void _eputs_(char *s);
+int _eputchar_(char ch);
+int _put_fd(char ch, int fd);
+int _puts_fd(char *s, int fd);
 
 /* string.c */
-int _strlen(char *);
-int _strcmp(char *, char *);
-char *starts_(const char *, const char *);
-char *_strcat(char *, char *);
+int str_len(const char *str);
+int str_cmp(char *str1, char *str2);
+char *_starts_with(const char *sea, const char *pearl);
+char *str_cat(char *dest, char *src);
 
 /* string1.c */
-char *_strcpy(char *, char *);
-char *_strdup(const char *);
-void _puts(char *);
-int _putchar(char);
+char *str_cpy(char *dest, char *src);
+char *str_dup(const char *str);
+void _puts_(char *str);
+int _putchar_(char ch);
 
 /* exits.c */
-char *str_cpy(char *, char *, int);
-char *str_cat(char *, char *, int);
-char *str_chr(char *, char);
+char *str_cpy(char *dest, char *src, int num);
+char *str_cat(char *dest, char *src, int num);
+char *find_chr(char *str, char ch);
 
 /* tokenizer.c */
-char **strtow(char *, char *);
-char **str_tow(char *, char);
+char **str_tow(char *str, char *delim);
+char **_str_tow(char *str, char delim);
 
 /* realloc.c */
-char *_memset(char *, char, unsigned int);
-void sfree(char **);
-void *_realloc(void *, unsigned int, unsigned int);
+char *_memset_(char *store, char b, unsigned int num);
+void free_str(char **ds);
+void *_realloc_(void *ptr, unsigned int prev_size, unsigned int new_size);
 
 /* memory.c */
-int my_free(void **);
+int free_ptr(void **ptr);
 
 /* _atoi.c */
-int is_interactive(info_t *);
-int is_delim(char, char *);
-int _isalpha(int);
-int _atoi(char *);
+int _is_interactive(cm_info *cu_info);
+int _is_delim(char ch, char *delim);
+int _is_alpha(int ch);
+int _atoi_(char *str);
 
 /* errors1.c */
-int err_atoi(char *);
-void print_err(cm_info *, char *);
-int print_dec(int, int);
-char *convert_num(long int, int, int);
-void change_comments(char *);
+int _err_atoi(char *str);
+void _print_err(cm_info *cu_info, char *err_str);
+int _print_dec(int input, int fd);
+char *num_convert(long int num, int base, int flags);
+void alt_comments(char *buff);
 
 /* builtin.c */
-int _myexit(cm_info *);
-int _cd(cm_info *);
-int _help(cm_info *);
+int _exit_(cm_info *cu_info);
+int _cd_(cm_info *cu_info);
+int _help_(cm_info *cu_info);
 
 /* builtin1.c */
-int _history(cm_info *);
-int _alias(cm_info *);
+int _history_(cm_info *cu_info);
+int _unset_alias(cm_info *cu_info, char *str);
+int _set_alias(cm_info *cu_info, char *str);
+int _print_alias(list_st *al_node);
+int _alias_(cm_info *cu_info;
 
 /* getline.c */
-ssize_t get_input(cm_info *);
-int _getline(cm_info *, char **, size_t *);
-void sigintHandle(int);
+ssize_t buff_input(cm_info *cu_info, char **buff, size_t *len);
+ssize_t _get_input(cm_info *cu_info);
+ssize_t _read_buff(cm_info *cu_info, char *buff, size_t *sz);
+int _get_line(cm_info *cu_info, char **ptr, size_t *len);
+void ctrl_c_handler(__attribute__((unused))int sig_num);
 
 /* getinfo.c */
-void init_info(info_t *);
-void set_info(info_t*, char **);
-void set_info(info_t *, char **);
-void free_info(info_t *, int);
+void _init_info(cm_info *cu_info);
+void sets_info(cm_info *cu_info, char **args);
+void frees_cu_info(cm_info *cu_info, int all);
 
 /* environ.c */
-char *_getenv(info_t *, const char *);
-int _myenv(info_t *);
-int _mysetenv(info_t *);
-int _myunsetenv(info_t *);
-int env_list(info_t *);
+int _myenv_(cm_info *cu_info);
+char *_getenv_(cm_info *cu_info, const char *name);
+int _mysetenv_(cm_info *cu_info);
+int _myunsetenv_(cm_info *cu_info);
+int _env_list(cm_info *cu_info);
 
 /* getenv.c */
-char **find_environ(info_t *);
-int _unsetenv(info_t *, char *);
-int _setenv(info_t *, char *, char *);
+char **find_env(cm_info *cu_info);
+int _unsetenv_(cm_info *cu_info, char *value);
+int _setenv_(cm_info *cu_info, char *var, char *value);
 
 /* history.c */
-char *find_history(info_t *info);
-int create_history(info_t *info);
-int read_history(info_t *info);
-int build_history_list(info_t *info, char *buf, int linecount);
-int number_history(info_t *info);
+char *gets_history(cm_info *cu_info);
+int creates_history(cm_info *cu_info);
+int reads_history(cm_info *cu_info);
+int builds_history_list(cm_info *cu_info, char *buff, int linecount);
+int numbers_history(cm_info *cu_info);
 
 /* lists.c */
-list_t *add_node(list_t **, const char *, int);
-list_t *ins_node_end(list_t **, const char *, int);
-size_t print_list_str(const list_t *);
-int del_node_at_index(list_t **, unsigned int);
-void freeLists(list_t **);
+list_st *add_node_beginning(list_st **head, const char *str, int num);
+list_st *ins_node_end(list_st **head, const char *str, int num);
+size_t print_list_str(const list_st *ptr);
+int del_node_at_index(list_st **head, unsigned int index);
+void frees_lists(list_st **ptr_head);
 
 /* lists1.c */
-size_t lists_len(const list_t *);
-char **list_of_strings(list_t *);
-size_t printList(const list_t *);
-list_t *node_starts_(list_t *, char *, char);
-ssize_t get_node_index(list_t *, list_t *);
+size_t len_lists(const list_st *ptr_node);
+char **list_of_strings(list_st *head);
+size_t prints_list(const list_st *ptr_node);
+list_st *node_starts_(list_st *ptr_head, char *prefix, char ch);
+ssize_t get_node_index(list_st *ptr_head, list_st *node);
 
 /* vars.c */
 int is_chain(info_t *, char *, size_t *);
