@@ -90,19 +90,19 @@ ssize_t _get_input(cm_info *cu_info)
  * _read_buff - It reads the buffer
  * @cu_info: The param struct
  * @buff: The buffer
- * @int: The size of buffer
+ * @sz: The size of buffer
  * Return: The number of bytes
  */
-ssize_t _read_buff(cm_info *cu_info, char *buff, size_t *int)
+ssize_t _read_buff(cm_info *cu_info, char *buff, size_t *sz)
 {
 	ssize_t num = 0;
 
-	if (*int)
+	if (*sz)
 		return (0);
 	
 	num = read(cu_info->readfd, buff, READ_BUFF_SIZE);
 	if (num >= 0)
-		*int = num;
+		*sz = num;
 	return (num);
 }
 
