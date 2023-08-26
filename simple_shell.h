@@ -24,7 +24,7 @@
 #define CMD_CHAIN	3
 
 /* for converting a number functon */
-#define CONVERT_LOWERCASE	1
+#define CONVERT_LOWER    	1
 #define CONVERT_UNSIGNED	2
 
 /* when using system getline() */
@@ -232,10 +232,10 @@ list_st *node_starts_(list_st *ptr_head, char *prefix, char ch);
 ssize_t get_node_index(list_st *ptr_head, list_st *node);
 
 /* vars.c */
-int is_chain(info_t *, char *, size_t *);
-void check_chain(info_t *, char *, size_t *, size_t, size_t);
-int replace_alias(info_t *);
-int replace_vars(info_t *);
-int replace_string(char **, char *);
+int is_chain(cm_info *cu_info, char *buff, size_t *ptr);
+void checks_chain(cm_info *cu_info, char *buff, size_t *ptr, size_t ai, size_t len);
+int replace_alias(cm_info *cu_info);
+int replace_vars(cm_info *cu_info);
+int replace_string(char **old, char *new);
 
 #endif /* SIMPLE_SHELL_H */
