@@ -1,14 +1,14 @@
 #include "simple_shell.h"
 
 /**
- * checks_chain - Checks whther  current char is a chain delimeter
+ * is_chain - Checks whther  current char is a chain delimeter
  * @cu_info: The param struct
  * @buff: Char buffer
  * @ptr: Address of current position in buffer
  *
  * Return: 1 if chain delimeter, 0 otherwise
  */
-int checks_chain(cm_info *cu_info, char *buff, size_t *ptr)
+int is_chain(cm_info *cu_info, char *buff, size_t *ptr)
 {
 	size_t jb = *ptr;
 
