@@ -23,7 +23,7 @@
 #define CMD_AND		2
 #define CMD_CHAIN	3
 
-/* for converting a number functon */
+/* for converting a number function */
 #define CONVERT_LOWER    	1
 #define CONVERT_UNSIGNED	2
 
@@ -39,7 +39,7 @@ extern char **environ;
 
 /**
  * struct liststr - singly linked list
- * @num: number off ields
+ * @num: number of fields
  * @str: a string
  * @next: pointer to the to the next node
  */
